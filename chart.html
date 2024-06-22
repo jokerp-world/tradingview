@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Chart</title>
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        #top-bar {
+            background-color: #2a2e39;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #symbol-select, #timeframe-select {
+            background-color: #2a2e39;
+            color: white;
+            border: 1px solid #4a4a4a;
+            padding: 5px;
+        }
+        #settings-icon {
+            cursor: pointer;
+            font-size: 24px;
+        }
+        #chart-container {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50px; /* Height of the top bar */
+            bottom: 0;
+        }
+        #settings-panel {
+            display: none;
+            position: absolute;
+            right: 10px;
+            top: 60px;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            z-index: 1000;
+        }
+        #settings-panel label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        #settings-panel input[type="color"] {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="top-bar">
+        <select id="symbol-select">
+            <option value="BTCUSDT">BTC/USDT</option>
+            <option value="ETHUSDT">ETH/USDT</option>
+            <option value="BNBUSDT">BNB/USDT</option>
+        </select>
+        <select id="timeframe-select">
+            <option value="1m">1 minute</option>
+            <option value="5m">5 minutes</option>
+            <option value="15m" selected>15 minutes</option>
+            <option value="1h">1 hour</option>
+            <option value="4h">4 hours</option>
+            <option value="1d">1 day</option>
+        </select>
+        <div id="settings-icon">⚙️</div>
+    </div>
+    <div id="chart-container"></div>
+    <div id="settings-panel">
+        <label for="bullish-body-color">Bullish Body Color</label>
+        <input type="color" id="bullish-body-color" value="#26a69a">
+        <label for="bullish-shadow-color">Bullish Shadow Color</label>
+        <input type="color" id="bullish-shadow-color" value="#26a69a">
+        <label for="bearish-body-color">Bearish Body Color</label>
+        <input type="color" id="bearish-body-color" value="#ef5350">
+        <label for="bearish-shadow-color">Bearish Shadow Color</label>
+        <input type="color" id="bearish-shadow-color" value="#ef5350">
+        <label for="text-color">Text Color</label>
+        <input type="color" id="text-color" value="#888888">
+        <label for="grid-color">Grid Color</label>
+        <input type="color" id="grid-color" value="#efefef">
+        <label for="background-color">Background Color</label>
+        <input type="color" id="background-color" value="#ffffff">
+
+        <button id="apply-settings">Apply</button>
+    </div>
+    <script src="chart.js"></script>
+</body>
+</html>
