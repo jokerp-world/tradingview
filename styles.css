@@ -1,10 +1,8 @@
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
 }
-
 #top-bar {
     background-color: #2a2e39;
     color: white;
@@ -13,35 +11,38 @@ body {
     justify-content: space-between;
     align-items: center;
 }
-
-.symbol-select, .timeframe-select, .chart-status, .chart-controls {
-    margin-right: 10px;
-}
-
-.symbol-select select, .timeframe-select select {
+#symbol-select, #timeframe-select {
     background-color: #2a2e39;
     color: white;
     border: 1px solid #4a4a4a;
     padding: 5px;
 }
-
-.chart-status input[type="checkbox"] {
-    margin-right: 5px;
-}
-
-.chart-controls button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px;
+#settings-icon {
     cursor: pointer;
+    font-size: 24px;
 }
-
-.chart-controls button:hover {
-    background-color: #45a049;
-}
-
 #chart-container {
-    height: 400px; /* تنظیم ارتفاع نمودار */
-    margin: 20px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50px; /* Height of the top bar */
+    bottom: 0;
+}
+#settings-panel {
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 60px;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1000;
+}
+#settings-panel label {
+    display: block;
+    margin-bottom: 5px;
+}
+#settings-panel input[type="color"] {
+    width: 100%;
+    margin-bottom: 10px;
 }

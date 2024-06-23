@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Chart</title>
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <script>
+        // بررسی وضعیت ورود
+        const currentUser = localStorage.getItem('currentUser');
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        }
+    
+        // اضافه کردن دکمه خروج
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutButton = document.createElement('div');
+            logoutButton.textContent = 'logout';
+            logoutButton.style.position = 'fixed';
+            logoutButton.style.top = '18px';
+            logoutButton.style.right = '10px';
+            logoutButton.style.background = '#00081a';
+            logoutButton.style.cursor = 'pointer';
+            logoutButton.className = 'logout-botton'
+            logoutButton.style.color ='#ffffff';
+            logoutButton.style.fontFamily = 'Arial, sans-serif';
+            logoutButton.style.fontSize = '15px'
+            logoutButton.onclick = () => {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            };
+            document.body.appendChild(logoutButton);
+        });
+    </script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        #top-bar {
+            background-color: #00081a;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px 2px  solid #3f3f3f;
+        }
+        #symbol-select, #timeframe-select {
+            background-color: #05001a;
+            color: white;
+            border: 1px solid #030025;
+            padding: 5px;
+        }
+        #settings-icon {
+            cursor: pointer;
+            font-size: 24px;
+            margin-right: 55px;
+        }
+        #chart-container {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50px; /* Height of the top bar */
+            bottom: 0;
+        }
+        #settings-panel {
+            display: none;
+            position: absolute;
+            right: 10px;
+            top: 60px;
+            background-color: rgb(4, 0, 22);
+            border: 1px solid #171718;
+            padding: 10px;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(37, 37, 37, 0.1);
+        }
+        #settings-panel label {
+            display: block;
+            margin-bottom: 1px;
+            color: white;
+        }
+        #settings-panel input[type="color"] {
+            width: 100%;
+            margin-bottom: 10px;
+            border: 1px solid;
+        }
+        #settings-panel  apply-settings{
+            color:#010025;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="top-bar">
+        <select id="symbol-select">
+            <option value="BTCUSDT">BTC/USDT</option>
+            <option value="ETHUSDT">ETH/USDT</option>
+            <option value="BNBUSDT">BNB/USDT</option>
+        </select>
+        <select id="timeframe-select">
+            <option value="1m">1 minute</option>
+            <option value="5m">5 minutes</option>
+            <option value="15m" selected>15 minutes</option>
+            <option value="1h">1 hour</option>
+            <option value="4h">4 hours</option>
+            <option value="1d">1 day</option>
+        </select>
+        <div id="settings-icon">⚙️</div>
+    </div>
+    <div id="chart-container"></div>
+    <div id="settings-panel">
+        <label for="bullish-body-color">Bullish Body Color</label>
+        <input type="color" id="bullish-body-color" value="#26a69a">
+        <label for="bullish-shadow-color">Bullish Shadow Color</label>
+        <input type="color" id="bullish-shadow-color" value="#26a69a">
+        <label for="bearish-body-color">Bearish Body Color</label>
+        <input type="color" id="bearish-body-color" value="#ef5350">
+        <label for="bearish-shadow-color">Bearish Shadow Color</label>
+        <input type="color" id="bearish-shadow-color" value="#ef5350">
+        <label for="text-color">Text Color</label>
+        <input type="color" id="text-color" value="#888888">
+        <label for="grid-color">Grid Color</label>
+        <input type="color" id="grid-color" value="#efefef">
+        <label for="background-color">Background Color</label>
+        <input type="color" id="background-color" value="#ffffff">
+
+        <button id="apply-settings">Apply</button>
+    </div>
+    <script src="chart.js"></script>
+</body>
+</html>

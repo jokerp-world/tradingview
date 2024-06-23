@@ -17,6 +17,10 @@ let symbol = 'BTCUSDT';
 let timeframe = '15m';
 let allData = [];
 
+
+
+
+
 function initChart() {
     chart = LightweightCharts.createChart(chartContainer, {
         width: chartContainer.clientWidth,
@@ -189,7 +193,38 @@ settingsIcon.addEventListener('click', () => {
     settingsPanel.style.display = settingsPanel.style.display === 'none' ? 'block' : 'none';
 });
 
-applySettingsButton.addEventListener('click', () => {
+
+// تابع جدید برای ذخیره تنظیمات
+function saveSettings() {
+    const settings = {
+        bullishBodyColor: bullishBodyColorInput.value,
+        bullishShadowColor: bullishShadowColorInput.value,
+        bearishBodyColor: bearishBodyColorInput.value,
+        bearishShadowColor: bearishShadowColorInput.value,
+        backgroundColor: backgroundColorInput.value,
+        textColor: textColorInput.value,
+        gridColor: gridColorInput.value
+    };
+    localStorage.setItem('chartSettings', JSON.stringify(settings));
+}
+
+// تابع جدید برای بازیابی تنظیمات
+function loadSettings() {
+    const savedSettings = localStorage.getItem('chartSettings');
+    if (savedSettings) {
+        const settings = JSON.parse(savedSettings);
+        bullishBodyColorInput.value = settings.bullishBodyColor;
+        bullishShadowColorInput.value = settings.bullishShadowColor;
+        bearishBodyColorInput.value = settings.bearishBodyColor;
+        bearishShadowColorInput.value = settings.bearishShadowColor;
+        backgroundColorInput.value = settings.backgroundColor;
+        textColorInput.value = settings.textColor;
+        gridColorInput.value = settings.gridColor;
+        applySettings();
+    }
+}
+
+function applySettings() {
     const bullishBodyColor = bullishBodyColorInput.value;
     const bullishShadowColor = bullishShadowColorInput.value;
     const bearishBodyColor = bearishBodyColorInput.value;
@@ -197,7 +232,6 @@ applySettingsButton.addEventListener('click', () => {
     const backgroundColor = backgroundColorInput.value;
     const textColor = textColorInput.value;
     const gridColor = gridColorInput.value;
-
 
     if (candleSeries) {
         candleSeries.applyOptions({
@@ -207,12 +241,15 @@ applySettingsButton.addEventListener('click', () => {
             wickUpColor: bullishShadowColor,
             wickDownColor: bearishShadowColor,
         });
+    } else {
+        console.error("Candle series not initialized");
     }
 
     if (chart) {
         chart.applyOptions({
             layout: {
-                textColor: textColor, background: { type: 'solid', color: backgroundColor }
+                textColor: textColor,
+                background: { type: 'solid', color: backgroundColor }
             },
             grid: {
                 vertLines: {
@@ -223,11 +260,39 @@ applySettingsButton.addEventListener('click', () => {
                 }
             }
         });
+    } else {
+        console.error("Chart not initialized");
     }
 
+    // Force a redraw of the chart
+    if (chart) {
+        chart.timeScale().fitContent();
+    }
+
+    console.log("Settings applied:", { bullishBodyColor, bullishShadowColor, bearishBodyColor, bearishShadowColor, backgroundColor, textColor, gridColor });
+}
+
+function saveSettings() {
+    const settings = {
+        bullishBodyColor: bullishBodyColorInput.value,
+        bullishShadowColor: bullishShadowColorInput.value,
+        bearishBodyColor: bearishBodyColorInput.value,
+        bearishShadowColor: bearishShadowColorInput.value,
+        backgroundColor: backgroundColorInput.value,
+        textColor: textColorInput.value,
+        gridColor: gridColorInput.value
+    };
+    localStorage.setItem('chartSettings', JSON.stringify(settings));
+    console.log("Settings saved:", settings);
+}
+
+// تغییر در event listener دکمه اعمال تنظیمات
+applySettingsButton.addEventListener('click', () => {
+    console.log("Apply button clicked");
+    applySettings();
+    saveSettings();
     settingsPanel.style.display = 'none';
 });
-
 function setupChartEvents() {
     if (chart) {
         chart.timeScale().subscribeVisibleLogicalRangeChange(() => {
@@ -243,8 +308,25 @@ function setupChartEvents() {
         console.error("Chart not initialized");
     }
 }
-
+document.querySelectorAll('.dropdown').forEach(dropdown => {
+    const selected = dropdown.querySelector('.selected');
+    const ul = dropdown.querySelector('ul');
+    
+    ul.querySelectorAll('li').forEach(li => {
+        li.addEventListener('click', () => {
+            selected.textContent = li.textContent;
+            if (dropdown.id === 'symbol-select') {
+                symbol = li.textContent.replace('/', '');
+                loadInitialData();
+            } else if (dropdown.id === 'timeframe-select') {
+                timeframe = li.textContent.toLowerCase();
+                loadInitialData();
+            }
+        });
+    });
+});
 initChart();
+loadSettings(); // بازیابی تنظیمات ذخیره شده
 loadInitialData().then(() => {
     ws = initWebSocket();
     setupChartEvents(); 
